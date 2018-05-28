@@ -3,8 +3,8 @@
 
 export default {
   state: {
-    draft: 'Draft',
-    paused: 'Pause',
-    ended: 'End'
+    draft: 'Borrador',
+    paused: 'Pausa',
+    ended: 'Finalizada'
   }
 }

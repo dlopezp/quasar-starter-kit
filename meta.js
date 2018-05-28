@@ -28,13 +28,18 @@ module.exports = {
       type: 'string',
       required: true,
       message: 'Project product name (official name)',
-      default: 'Quasar App'
+      default: 'Playmo App'
+    },
+    promotionId: {
+      type: 'string',
+      required: true,
+      message: 'Promotion ID'
     },
     description: {
       type: 'string',
       required: false,
       message: 'Project description',
-      default: 'A Quasar Framework app',
+      default: 'A Playmo app',
     },
     author: {
       type: 'string',
@@ -56,14 +61,6 @@ module.exports = {
         {
           name: 'Axios',
           value: 'axios'
-        },
-        {
-          name: 'Vue-i18n',
-          value: 'i18n'
-        },
-        {
-          name: 'IE11 support',
-          value: 'ie'
         }
       ]
     },
@@ -123,8 +120,6 @@ module.exports = {
     '.eslintignore': 'preset.lint',
     '.stylintrc': 'preset.lint',
     'src/store/**/*': 'preset.vuex',
-    'src/i18n/**/*': 'preset.i18n',
-    'src/plugins/i18n.js': 'preset.i18n',
     'src/plugins/axios.js': 'preset.axios'
   },
   complete: function(data, { chalk }) {

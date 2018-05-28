@@ -7,14 +7,20 @@
   "author": "{{ author }}",
   "private": true,
   "scripts": {
+    "create-bucket": "export $(cat .env | xargs) && aws s3 mb s3://$AWS_S3_BUCKET --profile $AWS_PROFILE",
+    "create-distribution": "aws cloudfront create-distribution --origin-domain-name $AWS_S3_BUCKET.s3.amazonaws.com --default-root-object index.html --profile $AWS_PROFILE --query 'Distribution.Id'",
+    "upload": "export $(cat .env | xargs) && quasar build && aws s3 sync dist/spa-mat s3://$AWS_S3_BUCKET --delete --acl public-read --profile $AWS_PROFILE",
+    "deploy": "export $(cat .env | xargs) && aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION --paths /\\* --profile $AWS_PROFILE",
+    "release": "quasar build && npm run upload && npm run deploy",
     {{#preset.lint}}"lint": "eslint --ext .js,.vue src",{{/preset.lint}}
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    {{#preset.axios}}"axios": "^0.18.0"{{/preset.axios}}{{#preset.i18n}}{{#preset.axios}},{{/preset.axios}}
-    "vue-i18n": "^7.3.3"{{/preset.i18n}}
+    "vuelidate": "^0.6.2",
+    "vue-i18n": "^7.3.3"{{#preset.axios}},"axios": "^0.18.0"{{/preset.axios}}
   },
   "devDependencies": {
+    "playmo-quasar-plugin": "^0.0.0",
     {{#preset.lint}}
     "babel-eslint": "^8.2.1",
     "eslint": "^4.18.2",
@@ -33,7 +39,8 @@
     "eslint-plugin-import": "^2.9.0",
     {{/if_eq}}
     {{/preset.lint}}
-    "quasar-cli": "^0.16.0"
+    "quasar-cli": "^0.16.0",
+    "vuex-router-sync": "^5.0.0"
   },
   "engines": {
     "node": ">= 8.9.0",

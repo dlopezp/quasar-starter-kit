@@ -15,6 +15,7 @@ exports.sortDependencies = function sortDependencies(data) {
     data.inPlace ? '' : data.destDirName,
     'package.json'
   )
+  console.log(pkgFile)
   let sorted = false
   const pkg = JSON.parse(fs.readFileSync(pkgFile))
 

@@ -4,9 +4,10 @@ module.exports = function (ctx) {
   return {
     // app plugins (/src/plugins)
     plugins: [
-      {{#preset.i18n}}
-      'i18n'{{#preset.axios}},{{/preset.axios}}
-      {{/preset.i18n}}
+      'playmo',
+      'vuex-router-sync',
+      'vuelidate',
+      'i18n',
       {{#preset.axios}}
       'axios'
       {{/preset.axios}}
@@ -21,10 +22,13 @@ module.exports = function (ctx) {
       // 'mdi',
       // 'fontawesome'
     ],
-    supportIE: {{#preset.ie}}true{{/preset.ie}}{{#unless_eq preset.ie true}}false{{/unless_eq}},
+    supportIE: true,
     build: {
+      env: {
+        PROMOTION_ID: '{{ promotionId }}'
+      },
       scopeHoisting: true,
-      vueRouterMode: 'history',
+      vueRouterMode: 'hash',
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
@@ -35,9 +39,13 @@ module.exports = function (ctx) {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /(node_modules|quasar)/
+          exclude: /(node_modules|quasar|playmo)/
         })
         {{/preset.lint}}
+        cfg.resolve.alias = {
+          ...cfg.resolve.alias,
+          '@': path.resolve(__dirname, './src')
+        }
       }
     },
     devServer: {
@@ -48,7 +56,9 @@ module.exports = function (ctx) {
     // framework: 'all' --- includes everything; for dev only!
     framework: {
       components: [
+        'QField',
         'QLayout',
+        'QLayoutFooter',
         'QLayoutHeader',
         'QLayoutDrawer',
         'QPageContainer',
@@ -61,7 +71,15 @@ module.exports = function (ctx) {
         'QListHeader',
         'QItem',
         'QItemMain',
-        'QItemSide'
+        'QItemSide',
+        'QInput',
+        'QCard',
+        'QCardMain',
+        'QCardSeparator',
+        'QCardTitle',
+        'QSelect',
+        'QCheckbox',
+        'QDatetime'
       ],
       directives: [
         'Ripple'
@@ -74,6 +92,7 @@ module.exports = function (ctx) {
     },
     // animations: 'all' --- includes all animations
     animations: [
+      'all'
     ],
     pwa: {
       // workboxPluginMode: 'InjectManifest',
